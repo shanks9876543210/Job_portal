@@ -1,0 +1,48 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+    <h2>{% if form.instance.id %}Edit Job{% else %}Create Job{% endif %}</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_title" class="form-label">Job Title</label>
+            <input type="text" name="title" class="form-control" id="id_title" value="{{ form.title.value|default_if_none:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            <textarea name="description" class="form-control" id="id_description" rows="8" required>{{ form.description.value|default_if_none:'' }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="id_location" class="form-label">Location</label>
+            <input type="text" name="location" class="form-control" id="id_location" value="{{ form.location.value|default_if_none:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_salary" class="form-label">Salary</label>
+            <input type="number" name="salary" step="0.01" class="form-control" id="id_salary" value="{{ form.salary.value|default_if_none:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_expiry_date" class="form-label">Expiry Date</label>
+            <input type="date" name="expiry_date" class="form-control" id="id_expiry_date" value="{{ form.expiry_date.value|default_if_none:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_category" class="form-label">Category</label>
+            <select name="category" class="form-control" id="id_category" required>
+                {% for value, label in form.fields.category.choices %}
+                    <option value="{{ value }}" {% if form.category.value == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id_is_published" class="form-label">Published</label>
+            <select name="is_published" class="form-control" id="id_is_published" required>
+                <option value="True" {% if form.is_published.value %}selected{% endif %}>Yes</option>
+                <option value="False" {% if not form.is_published.value %}selected{% endif %}>No</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+{% endblock %}

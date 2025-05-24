@@ -1,0 +1,99 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+    <h2>Register</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_username" class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" id="id_username" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_first_name" class="form-label">First Name</label>
+            <input type="text" name="first_name" class="form-control" id="id_first_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_last_name" class="form-label">Last Name</label>
+            <input type="text" name="last_name" class="form-control" id="id_last_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" id="id_email" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_password1" class="form-label">Password</label>
+            <div class="input-group">
+                <input type="password" name="password1" class="form-control" id="id_password1" required>
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('id_password1')">Show</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="id_password2" class="form-label">Confirm Password</label>
+            <div class="input-group">
+                <input type="password" name="password2" class="form-control" id="id_password2" required>
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('id_password2')">Show</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="id_role" class="form-label">Role</label>
+            <select name="role" class="form-control" id="id_role" required>
+                <option value="employee">Employee</option>
+                <option value="employer">Employer</option>
+            </select>
+        </div>
+        <div class="mb-3" id="company_name_field" style="display: none;">
+            <label for="id_company_name" class="form-label">Company Name</label>
+            <input type="text" name="company_name" class="form-control" id="id_company_name">
+        </div>
+        <div class="mb-3" id="industry_field" style="display: none;">
+            <label for="id_industry" class="form-label">Industry</label>
+            <input type="text" name="industry" class="form-control" id="id_industry">
+        </div>
+        <div class="mb-3" id="skills_field">
+            <label for="id_skills" class="form-label">Skills (comma-separated)</label>
+            <textarea name="skills" class="form-control" id="id_skills" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p class="mt-3">Already have an account? <a href="{% url 'login' %}" class="btn btn-outline-primary">Sign In</a></p>
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const button = input.nextElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                button.textContent = 'Show';
+            }
+        }
+
+        function toggleFields() {
+            const role = document.getElementById('id_role').value;
+            const companyNameField = document.getElementById('company_name_field');
+            const industryField = document.getElementById('industry_field');
+            const skillsField = document.getElementById('skills_field');
+
+            if (role === 'employee') {
+                skillsField.style.display = 'block';
+                companyNameField.style.display = 'none';
+                industryField.style.display = 'none';
+            } else if (role === 'employer') {
+                skillsField.style.display = 'none';
+                companyNameField.style.display = 'block';
+                industryField.style.display = 'block';
+            }
+        }
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', toggleFields);
+
+        // Run on role change
+        document.getElementById('id_role').addEventListener('change', toggleFields);
+    </script>
+    {% endblock %}

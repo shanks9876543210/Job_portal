@@ -1,0 +1,36 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+    <h2>Employer Dashboard</h2>
+    <a href="{% url 'job_create' %}" class="btn btn-success mb-3">Post New Job</a>
+    <h3>Your Job Posts</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Location</th>
+                <th>Salary</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.salary }}</td>
+                    <td>{{ job.expiry_date }}</td>
+                    <td>{{ job.is_published|yesno:"Published,Unpublished" }}</td>
+                    <td>
+                        <a href="{% url 'job_applicants' job.id %}" class="btn btn-info btn-sm">View Applicants</a>
+                        <a href="{% url 'job_edit' job.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'job_delete' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6">No jobs posted yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

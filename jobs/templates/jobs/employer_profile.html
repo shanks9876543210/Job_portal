@@ -1,0 +1,30 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+    <h2>Employer Profile</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Your Profile</h5>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Company Name:</strong> {{ user.company_name|default:"Not set" }}</p>
+            <p><strong>Industry:</strong> {{ user.industry|default:"Not set" }}</p>
+        </div>
+    </div>
+    <h3>Update Profile</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_company_name" class="form-label">Company Name</label>
+            <input type="text" name="company_name" class="form-control" id="id_company_name" value="{{ form.company_name.value|default_if_none:user.company_name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_industry" class="form-label">Industry</label>
+            <input type="text" name="industry" class="form-control" id="id_industry" value="{{ form.industry.value|default_if_none:user.industry }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+    <h2>Your Bookmarks</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>Location</th>
+                <th>Salary</th>
+                <th>Bookmarked At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bookmark in bookmarks %}
+                <tr>
+                    <td><a href="{% url 'job_detail' bookmark.job.id %}">{{ bookmark.job.title }}</a></td>
+                    <td>{{ bookmark.job.location }}</td>
+                    <td>{{ bookmark.job.salary }}</td>
+                    <td>{{ bookmark.bookmarked_at }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No bookmarks yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
